@@ -1,10 +1,14 @@
-package com.barclayscard.interview.inventorysystem.test;
+package com.barclayscard.interview.inventorysystem;
+
+import static org.junit.Assert.assertEquals;
+
+import java.text.DecimalFormat;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.barclayscard.interview.inventorysystem.core.Database;
+import com.barclayscard.interview.inventorysystem.core.DatabaseDao;
 import com.barclayscard.interview.inventorysystem.transactions.Transactions;
 
 public class TransactionsTest {
@@ -15,7 +19,7 @@ public class TransactionsTest {
 
 	@After
 	public void tearDown() throws Exception {
-		Database.getDataBase().clear();
+		DatabaseDao.getDataBase().clear();
 	}
 
 	@Test
@@ -36,6 +40,9 @@ public class TransactionsTest {
 		txn.parse("updateSell Food01 1");
 		txn.parse("updateSell Tab01 2");
 		txn.parse("report");
+		DecimalFormat df = new DecimalFormat("####.00");
+		assertEquals(df.format(txn.getDb().getTotalValue()), "10317.06");
+		assertEquals(df.format(txn.getDb().getNetProfitOrLossSinceLastReportGeneration()), "116.94");
 		txn.parse("delete Book01");
 		txn.parse("updateSell Tab01 5");
 		txn.parse("create Mobile01 10.51 44.56");
@@ -44,6 +51,8 @@ public class TransactionsTest {
 		txn.parse("updateSell Mobile01 4");
 		txn.parse("updateSell Med01 10");
 		txn.parse("report");
+		assertEquals(df.format(txn.getDb().getTotalValue()), "11253.87");
+		assertEquals(df.format(txn.getDb().getNetProfitOrLossSinceLastReportGeneration()), "-724.75");
 	}
 	
 	@Test
@@ -64,6 +73,9 @@ public class TransactionsTest {
 		txn.parse("updateSell Food11 12");
 		txn.parse("updateSell Tab011 3");
 		txn.parse("report");
+		DecimalFormat df = new DecimalFormat("####.00");
+		assertEquals(df.format(txn.getDb().getTotalValue()), "30726.39");
+		assertEquals(df.format(txn.getDb().getNetProfitOrLossSinceLastReportGeneration()), "1067.43");
 		txn.parse("delete Book02");
 		txn.parse("delete Tab011");
 		txn.parse("create Mobile11 100.51 144.56");
@@ -72,6 +84,8 @@ public class TransactionsTest {
 		txn.parse("updateSell Mobile11 40");
 		txn.parse("updateSell Med001 100");
 		txn.parse("report");
+		assertEquals(df.format(txn.getDb().getTotalValue()), "29181.35");
+		assertEquals(df.format(txn.getDb().getNetProfitOrLossSinceLastReportGeneration()), "-12307.68");
 	}
 
 }

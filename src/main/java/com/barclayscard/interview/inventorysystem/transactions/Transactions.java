@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-import com.barclayscard.interview.inventorysystem.core.Database;
+import com.barclayscard.interview.inventorysystem.core.DatabaseDao;
 
 public class Transactions {
 	
-	Database db = new Database();
+	DatabaseDao db = new DatabaseDao();
 	
 	//parses each command and directs appropriate action.
 	public void parse(String str) {
@@ -56,35 +56,25 @@ public class Transactions {
 		}
 	}
 
+	public DatabaseDao getDb() {
+		return db;
+	}
+
 	public static void main(String[] args) {
 		
 		Transactions txn = new Transactions();
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
 		String str = new String();
 		
 		while(!str.equalsIgnoreCase("EOF")) {
-
 				
-				try {
+				try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
 					str = br.readLine();
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
-				
-				txn.parse(str);
-					
+				} 
+				txn.parse(str);			
 		}
-		
-		if(br != null) {
-			try {
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
 	}
 
 }
